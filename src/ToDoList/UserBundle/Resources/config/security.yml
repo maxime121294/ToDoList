@@ -15,5 +15,13 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-            logout:       true
+                login_path: fos_user_security_login
+                use_forward: false
+                check_path: fos_user_security_check
+                failure_path: null
+                default_target_path: /
+                remember_me: true
+            logout:
+                path: fos_user_security_logout
+                target: /
             anonymous:    true
