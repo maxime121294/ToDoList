@@ -21,6 +21,11 @@ security:
                 failure_path: null
                 default_target_path: /
                 remember_me: true
+            remember_me:
+                key: %secret%
+                lifetime: 300000000
+                path: /
+                domain: ~
             logout:
                 path: fos_user_security_logout
                 target: /
