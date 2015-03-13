@@ -1,5 +1,4 @@
 app/config/parameters.yml
 app/cache
 app/logs
-vendor
 composer.lock
