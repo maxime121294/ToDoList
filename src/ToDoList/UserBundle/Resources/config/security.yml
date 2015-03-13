@@ -4,7 +4,7 @@ security:
 
     providers:
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         dev:
@@ -15,5 +15,18 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-            logout:       true
+                login_path: fos_user_security_login
+                use_forward: false
+                check_path: fos_user_security_check
+                failure_path: null
+                default_target_path: /
+                remember_me: true
+            remember_me:
+                key: %secret%
+                lifetime: 300000000
+                path: /
+                domain: ~
+            logout:
+                path: fos_user_security_logout
+                target: /
             anonymous:    true
