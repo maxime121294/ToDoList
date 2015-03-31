@@ -19,7 +19,7 @@ security:
                 use_forward: false
                 check_path: fos_user_security_check
                 failure_path: null
-                default_target_path: /
+                default_target_path: listes
                 remember_me: true
             remember_me:
                 key: %secret%
