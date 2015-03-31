@@ -1,6 +1,7 @@
 to_do_list_list:
-    resource: "@ToDoListListBundle/Resources/config/routing.yml"
-    prefix:   /
+    resource: 	"@ToDoListListBundle/Controller"
+    type: 		annotation
+    prefix:   	/listes
 
 app:
     resource: @AppBundle/Controller/
