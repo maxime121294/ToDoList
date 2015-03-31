@@ -1,3 +1,8 @@
+to_do_list_list:
+    resource: 	"@ToDoListListBundle/Controller"
+    type: 		annotation
+    prefix:   	/listes
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
