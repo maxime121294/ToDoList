@@ -1,4 +1,4 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "ToDoListUserBundle::layout.html.twig" %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
@@ -6,7 +6,7 @@
 	<div class="col-md-12 jumbotron text-center">
 	    <p>
 	    	{{ 'registration.confirmed'|trans({'%username%': user.username}) }}<br />
-	    	Cliquez <a href="{{ path('fos_user_security_login')}}">ici</a> pour vous connecter.
+	    	Cliquez <a href="{{ path('fos_user_security_login') }}">ici</a> pour vous connecter.
 	    </p>
 	</div>
     {% if app.session is not empty %}
