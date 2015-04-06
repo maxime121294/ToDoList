@@ -57,10 +57,9 @@ class Task
     private $updatedAt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="author", type="string", length=255)
-     */
+     * @ORM\ManyToOne(targetEntity="ToDoList\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+    */
     private $author;
 
     public function __construct()
@@ -197,10 +196,10 @@ class Task
     /**
      * Set author
      *
-     * @param string $author
+     * @param \ToDoList\UserBundle\Entity\User $author
      * @return Task
      */
-    public function setAuthor($author)
+    public function setAuthor(\ToDoList\UserBundle\Entity\User $author)
     {
         $this->author = $author;
 
@@ -210,7 +209,7 @@ class Task
     /**
      * Get author
      *
-     * @return string 
+     * @return \ToDoList\UserBundle\Entity\User 
      */
     public function getAuthor()
     {
