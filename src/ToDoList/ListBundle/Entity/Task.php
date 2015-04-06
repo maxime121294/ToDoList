@@ -63,6 +63,11 @@ class Task
      */
     private $author;
 
+    public function __construct()
+    {
+        $this->createdAt = new \Datetime();
+        $this->updatedAt = new \Datetime();
+    }
 
     /**
      * Get id
