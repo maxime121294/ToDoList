@@ -36,6 +36,7 @@
                                 </fieldset>
                         </div>
                         <div class="modal-footer">
+                            <a href="{{ path('fos_user_resetting_request') }}" class="pull-left">Mot de passe oublié ?</a>
                             <a href="{{ path('fos_user_registration_register') }}" class="btn btn-sm btn-primary" id="inscription" name="inscription" />{% trans %}layout.register{% endtrans %}</a>
                             <input type="submit" class="btn btn-sm btn-success" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
                         </div>
