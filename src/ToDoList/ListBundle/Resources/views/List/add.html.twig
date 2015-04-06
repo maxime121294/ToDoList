@@ -36,4 +36,27 @@
 	            </form>
 	        </div>
 	    </div>
-	</div>{% endblock %}
+	</div>
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{asset('bundles/front/css/bootstrap-datetimepicker.min.css')}}">
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="{{asset('bundles/front/js/bootstrap-datetimepicker.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('bundles/front/js/locales/bootstrap-datetimepicker.fr.js')}}"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#todolist_listbundle_task_dueDate").datetimepicker({
+				format: "dd MM yyyy - hh:ii",
+		        autoclose: true,
+		        todayBtn: true,
+		        minuteStep: 15,
+		        language: 'fr',
+			});
+		});
+	</script>
+{% endblock %}

@@ -26,6 +26,8 @@ class TaskType extends AbstractType
             ->add('dueDate', 'datetime', array(
                 "label" => "Date butoir",
                 "required" => false,
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
             ))
         ;
     }
