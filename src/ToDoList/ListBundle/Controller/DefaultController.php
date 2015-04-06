@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use ToDoList\ListBundle\Form\TaskType;
 
 class DefaultController extends Controller
 {
@@ -27,7 +28,7 @@ class DefaultController extends Controller
      * Formulaire d'ajout d'une tache
      *
      * @Route("/tache/ajouter", name="ajouter_tache")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      * @Template()
      */
     public function addAction(Request $request)
@@ -39,7 +40,10 @@ class DefaultController extends Controller
 			return $this->redirect($this->generateUrl('listes'));
 		}
 
+		$form = $this->createForm(new TaskType());
 		// Si on n'est pas en POST, alors on affiche le formulaire
-		return $this->render('ToDoListListBundle:List:add.html.twig');
+		return $this->render('ToDoListListBundle:List:add.html.twig', array(
+			'form' => $form->createView(),
+		));
 	}
 }
