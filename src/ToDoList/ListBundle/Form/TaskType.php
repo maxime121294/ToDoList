@@ -18,14 +18,17 @@ class TaskType extends AbstractType
             ->add('title', 'text', array(
                 "label" => "Titre",
                 "required" => true,
+                "attr" => array("placeholder" => "Obligatoire"),
             ))
             ->add('description', 'textarea', array(
                 "label" => "Description",
                 "required" => false,
+                "attr" => array("placeholder" => "Facultatif"),
             ))
             ->add('dueDate', 'datetime', array(
                 "label" => "Date butoir",
                 "required" => false,
+                "attr" => array("placeholder" => "Facultatif"),
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ))
