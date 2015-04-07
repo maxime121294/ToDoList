@@ -22,7 +22,20 @@ class DefaultController extends Controller
     public function indexAction()
     {
     	$user = $this->container->get('security.context')->getToken()->getUser();
-        return $this->render('ToDoListListBundle:List:index.html.twig', array('name' => $user->getUsername()));
+
+    	$repository = $this
+    	  ->getDoctrine()
+    	  ->getManager()
+    	  ->getRepository('ToDoListListBundle:Task')
+    	;
+
+    	$tasks = $repository->findAll();
+
+        return $this->render('ToDoListListBundle:List:index.html.twig',
+        	array(
+        		'name' => $user->getUsername(),
+        		'tasks' => $tasks
+        	));
     }
 
     /**
