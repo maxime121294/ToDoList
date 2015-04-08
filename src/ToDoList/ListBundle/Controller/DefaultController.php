@@ -22,24 +22,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
     	$user = $this->container->get('security.context')->getToken()->getUser();
-    	$id = $user->getId();
-
-    	$repository = $this
-    	  ->getDoctrine()
-    	  ->getManager()
-    	  ->getRepository('ToDoListListBundle:Task')
-    	;
-
-    	$tasks = $repository->findBy(
-    		array('author' => $id), // Critere
-    		array('updatedAt' => 'desc')        // Tri
-    	);
-
-        return $this->render('ToDoListListBundle:List:index.html.twig',
-        	array(
-        		'user' => $user,
-        		'tasks' => $tasks
-        	));
+        return $this->render('ToDoListListBundle:List:index.html.twig', array('name' => $user->getUsername()));
     }
 
     /**
@@ -77,7 +60,6 @@ class DefaultController extends Controller
 		// Si on n'est pas en POST, alors on affiche le formulaire
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
 			'form' => $form->createView(),
-			'user' => $user,
 		));
 	}
 }
