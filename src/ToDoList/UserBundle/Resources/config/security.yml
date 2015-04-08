@@ -28,5 +28,5 @@ security:
                 domain: ~
             logout:
                 path: fos_user_security_logout
-                target: /
+                target: fos_user_security_login
             anonymous:    true
