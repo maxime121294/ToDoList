@@ -1,7 +1,21 @@
 {% extends '::base.html.twig' %}
 
 {% block accueil %}
-	class="active"
+	{% if affichage == "tout" %}
+		class="active"
+	{% endif %}
+{% endblock %}
+
+{% block en_cours %}
+	{% if affichage == "en_cours" %}
+		class="active"
+	{% endif %}
+{% endblock %}
+
+{% block terminees %}
+	{% if affichage == "terminees" %}
+		class="active"
+	{% endif %}
 {% endblock %}
 
 {% block body %}

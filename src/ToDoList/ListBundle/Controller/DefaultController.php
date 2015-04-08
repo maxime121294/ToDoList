@@ -15,11 +15,11 @@ class DefaultController extends Controller
 	/**
      * Affiche la page d'accueil contenant les listes de l'utilisateur connecté
      *
-     * @Route("/", name="listes")
+     * @Route("/{affichage}", name="listes")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($affichage = "tout")
     {
     	$user = $this->container->get('security.context')->getToken()->getUser();
     	$id = $user->getId();
@@ -38,7 +38,8 @@ class DefaultController extends Controller
         return $this->render('ToDoListListBundle:List:index.html.twig',
         	array(
         		'user' => $user,
-        		'tasks' => $tasks
+        		'tasks' => $tasks,
+        		'affichage' => $affichage
         	));
     }
 
