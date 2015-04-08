@@ -22,6 +22,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
     	$user = $this->container->get('security.context')->getToken()->getUser();
+    	$id = $user->getId();
 
     	$repository = $this
     	  ->getDoctrine()
@@ -29,7 +30,10 @@ class DefaultController extends Controller
     	  ->getRepository('ToDoListListBundle:Task')
     	;
 
-    	$tasks = $repository->findAll();
+    	$tasks = $repository->findBy(
+    		array('author' => $id), // Critere
+    		array('updatedAt' => 'desc')        // Tri
+    	);
 
         return $this->render('ToDoListListBundle:List:index.html.twig',
         	array(
