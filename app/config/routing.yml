@@ -9,3 +9,7 @@ app:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+KrumoBundle:
+    resource: "@OodleKrumoBundle/Resources/config/routing/routing.yml"
+    prefix:   /
