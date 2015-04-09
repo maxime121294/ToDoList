@@ -30,10 +30,32 @@ class DefaultController extends Controller
     	  ->getRepository('ToDoListListBundle:Task')
     	;
 
-    	$tasks = $repository->findBy(
-    		array('author' => $id), // Critere
-    		array('updatedAt' => 'desc')        // Tri
-    	);
+    	if($affichage == "tout") {
+	    	$tasks = $repository->findBy(
+	    		array('author' => $id), // Critere
+	    		array('updatedAt' => 'desc')        // Tri
+	    	);
+    	}
+    	else if($affichage == "en_cours") {
+	    	$query = $repository->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $id)
+		    	->orderBy("t.updatedAt", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
+    	else if($affichage == "terminees") {
+	    	$query = $repository->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $id)
+		    	->orderBy("t.dueDate", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
 
         return $this->render('ToDoListListBundle:List:index.html.twig',
         	array(
