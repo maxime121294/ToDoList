@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new ToDoList\UserBundle\ToDoListUserBundle(),
             new ToDoList\ListBundle\ToDoListListBundle(),
+            new Oodle\KrumoBundle\OodleKrumoBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
