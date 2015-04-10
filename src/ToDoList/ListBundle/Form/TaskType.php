@@ -30,7 +30,7 @@ class TaskType extends AbstractType
                 "required" => false,
                 "attr" => array("placeholder" => "Facultatif"),
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                'format' => 'dd/MM/yyyy HH:mm',
             ))
         ;
     }
