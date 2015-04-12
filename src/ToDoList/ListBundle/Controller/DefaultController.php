@@ -100,6 +100,7 @@ class DefaultController extends Controller
 		// Si on n'est pas en POST, alors on affiche le formulaire
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
 			'form' => $form->createView(),
+			'user' => $user
 		));
 	}
 }
