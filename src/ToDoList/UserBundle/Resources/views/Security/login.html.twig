@@ -1,72 +1,47 @@
+{% extends 'ToDoListUserBundle::layout.html.twig' %}
+
 {% trans_default_domain 'FOSUserBundle' %}
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>
-            {% block title %}Welcome !{% endblock %}
-        </title>
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{asset('bundles/front/css/bootstrap.css')}}">
-            <link rel="stylesheet" href="{{asset('bundles/front/css/bootstrap-theme.css')}}">
-            <link rel="stylesheet" href="{{asset('bundles/front/css/style.css')}}">
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% for type, messages in app.session.flashBag.all %}
-            {% for message in messages %}
-                <div class="{{ type }}">
-                    {{ message|trans({}, 'FOSUserBundle') }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        <div class="container-fluid">
-            <div class="col-md-12">
-                <div class="modal-dialog">
-                    <form role="form" action="{{ path("fos_user_security_check") }}" method="post">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title text-center">Connexion</h3>
-                            </div>
-                            <div class="modal-body">
-                                    <fieldset>
-                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-                                    <div class="form-group">
-                                        <label for="username">{{ 'security.login.username'|trans }}</label>
-                                        <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">{{ 'security.login.password'|trans }}</label>
-                                        <input class="form-control" type="password" id="password" name="_password" required="required" />
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-                                            <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-                                        </label>
-                                    </div>
-                                </fieldset>
+{% block fos_user_content %}
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="modal-dialog">
+                <form role="form" action="{{ path("fos_user_security_check") }}" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title text-center">Connexion</h3>
                         </div>
-                        <div class="modal-footer">
-                            <a href="{{ path('fos_user_resetting_request') }}" class="pull-left">Mot de passe oublié ?</a>
-                            <a href="{{ path('fos_user_registration_register') }}" class="btn btn-sm btn-primary" id="inscription" name="inscription" />{% trans %}layout.register{% endtrans %}</a>
-                            <input type="submit" class="btn btn-sm btn-success" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-                        </div>
-                    </form>
-                </div>
+                        <div class="modal-body">
+
+                            {% if error %}
+                                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+                            
+                            <fieldset>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                                <div class="form-group">
+                                    <label for="username">{{ 'security.login.username'|trans }}</label>
+                                    <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">{{ 'security.login.password'|trans }}</label>
+                                    <input class="form-control" type="password" id="password" name="_password" required="required" />
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                        <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+                                    </label>
+                                </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ path('fos_user_resetting_request') }}" class="pull-left">Mot de passe oublié ?</a>
+                        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-sm btn-primary" id="inscription" name="inscription" />{% trans %}layout.register{% endtrans %}</a>
+                        <input type="submit" class="btn btn-sm btn-success" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                    </div>
+                </form>
             </div>
         </div>
-
-        {% block javascripts %}
-            <script type="text/javascript" src="https://code.jquery.com/jquery.js"></script>
-            <script type="text/javascript" src="{{asset('bundles/front/js/bootstrap.js')}}"></script>
-        {% endblock %}
-    </body>
-</html>
+    </div>
+{% endblock %}
