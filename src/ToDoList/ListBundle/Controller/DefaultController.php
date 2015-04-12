@@ -15,7 +15,7 @@ class DefaultController extends Controller
 	/**
      * Affiche la page d'accueil contenant les listes de l'utilisateur connecté
      *
-     * @Route("/{affichage}", name="listes")
+     * @Route("/{affichage}", defaults={"affichage":"tout"}, name="listes")
      * @Method("GET")
      * @Template()
      */
