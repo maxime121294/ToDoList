@@ -3,9 +3,9 @@ to_do_list_list:
     type: 		annotation
     prefix:   	/listes
 
-app:
-    resource: @AppBundle/Controller/
-    type:     annotation
+to_do_list_user:
+    resource: 	"@ToDoListUserBundle/Controller"
+    type: 		annotation
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
