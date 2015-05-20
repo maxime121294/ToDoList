@@ -15,13 +15,13 @@
                             <fieldset>
                                 <div class="form-group">
                                     {{ form_label(form.plainPassword.first) }}
+                                    {{ form_widget(form.plainPassword.first) }}
                                     {{ form_errors(form.plainPassword.first) }}
-                                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="form-group">
                                     {{ form_label(form.plainPassword.second) }}
+                                    {{ form_widget(form.plainPassword.second) }}
                                     {{ form_errors(form.plainPassword.second) }}
-                                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 {{ form_rest(form) }}
                             </fieldset>
