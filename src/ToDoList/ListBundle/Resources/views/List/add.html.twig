@@ -15,18 +15,18 @@
                     <fieldset>
                         <div class="form-group">
                         	{{ form_label(form.title) }}
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
 					        {{ form_errors(form.title) }}
-					        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
                             {{ form_label(form.description) }}
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
 					        {{ form_errors(form.description) }}
-					        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
                             {{ form_label(form.dueDate) }}
+                            {{ form_widget(form.dueDate, {'attr': {'class': 'form-control'}}) }}
 					        {{ form_errors(form.dueDate) }}
-					        {{ form_widget(form.dueDate, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         {{ form_rest(form) }}
                     </fieldset>
