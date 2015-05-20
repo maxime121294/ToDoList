@@ -29,9 +29,11 @@
 			<div class="panel-body">
 				{{ task.description }}
 			</div>
-			<div class="panel-footer">
-				{{ task.dueDate|date('d-m-Y h:i') }}
-			</div>
+			{% if task.dueDate %}
+				<div class="panel-footer">
+					{{ task.dueDate|date('d-m-Y h:i') }}
+				</div>
+			{% endif %}
 		</div>
 	{% endfor %}
 {% endblock %}
