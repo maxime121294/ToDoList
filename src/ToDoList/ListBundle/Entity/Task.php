@@ -26,6 +26,7 @@ class Task
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $title;
@@ -33,14 +34,14 @@ class Task
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dueDate", type="datetime")
+     * @ORM\Column(name="dueDate", type="datetime", nullable=true)
      */
     private $dueDate;
 
