@@ -26,8 +26,7 @@ class Task
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="epic blank")
      */
     private $title;
 
