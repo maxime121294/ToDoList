@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use ToDoList\ListBundle\Form\TaskType;
 use ToDoList\ListBundle\Entity\Task;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
@@ -74,33 +75,44 @@ class DefaultController extends Controller
      */
     public function addAction(Request $request)
 	{
-		$user = $this->container->get('security.context')->getToken()->getUser();
 		$form = $this->createForm(new TaskType());
 		// Si la requête est en POST, c'est que le visiteur a soumis le formulaire
 		if ($request->isMethod('POST'))
 		{
-
 			$form->handleRequest($request);
-			$data = $form->getData();
+			$task = $form->getData();
 
 			if ($form->isValid())
 			{
-				$data->setAuthor($user);
-				// On l'enregistre notre objet $advert dans la base de données, par exemple
+				$user = $this->container->get('security.context')->getToken()->getUser();
+				$task->setAuthor($user);
 				$em = $this->getDoctrine()->getManager();
-				$em->persist($data);
+				$em->persist($task);
 				$em->flush();
 
+				// Si le formulaire est valide on redirige vers la liste de toutes les tâches
 				return $this->redirect($this->generateUrl('listes'));
 			}
-			// Puis on redirige vers l'index
-			return $this->redirect($this->generateUrl('ajouter_tache'));
+
+			$errors = array();
+			$validator = $this->get('validator');
+			$errorList = $validator->validate($task);
+			 
+			foreach($errorList as $error)
+			{
+				$errors['errors'][] = $error->getMessage();
+			}
+
+			// Sinon on recharge simplement la page d'ajout d'une nouvelle tâche en envoyant les erreurs correspondantes
+			return $this->render('ToDoListListBundle:List:add.html.twig', array(
+				'form' => $form->createView(),
+				'errors' => new JsonResponse($errors)
+			));
 		}
 
 		// Si on n'est pas en POST, alors on affiche le formulaire
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
-			'form' => $form->createView(),
-			'user' => $user
+			'form' => $form->createView()
 		));
 	}
 }
