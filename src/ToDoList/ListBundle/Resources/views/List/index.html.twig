@@ -24,7 +24,7 @@
 			<div class="panel-heading">
 				<h3 class="panel-title">
 					{{ task.title }}
-					<span class="glyphicon glyphicon-trash pull-right"></span>
+					<span class="glyphicon glyphicon-trash pull-right no-display"></span>
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -37,4 +37,15 @@
 			{% endif %}
 		</div>
 	{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+		$(function() {
+			$('#deleteTasks').click(function() {
+				$('.glyphicon-trash').fadeIn();
+			})
+		});
+	</script>
 {% endblock %}

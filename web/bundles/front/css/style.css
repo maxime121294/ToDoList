@@ -33,3 +33,7 @@ body{
 .glyphicon-trash{
 	cursor: pointer;
 }
+
+.no-display{
+	display: none;
+}
