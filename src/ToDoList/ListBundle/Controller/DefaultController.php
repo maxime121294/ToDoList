@@ -31,37 +31,14 @@ class DefaultController extends Controller
     	  ->getRepository('ToDoListListBundle:Task')
     	;
 
-    	if($affichage == "tout") {
-	    	$tasks = $repository->findBy(
-	    		array('author' => $id), // Critere
-	    		array('updatedAt' => 'desc')        // Tri
-	    	);
-    	}
-    	else if($affichage == "en_cours") {
-	    	$query = $repository->createQueryBuilder('t')
-		    	->where("t.author = :author")
-		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
-		    	->setParameter("author", $id)
-		    	->orderBy("t.updatedAt", "DESC")
-		    	->getQuery();
-
-		    $tasks = $query->getResult();
-    	}
-    	else if($affichage == "terminees") {
-	    	$query = $repository->createQueryBuilder('t')
-		    	->where("t.author = :author")
-		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
-		    	->setParameter("author", $id)
-		    	->orderBy("t.dueDate", "DESC")
-		    	->getQuery();
-
-		    $tasks = $query->getResult();
-    	}
+    	$tasks = $repository->getTasks($affichage, $id);
+    	$counterTasks = $repository->getCounterTasks($id);
 
         return $this->render('ToDoListListBundle:List:index.html.twig',
         	array(
         		'user' => $user,
         		'tasks' => $tasks,
+        		'counterTasks' => $counterTasks,
         		'affichage' => $affichage
         	));
     }
@@ -75,6 +52,17 @@ class DefaultController extends Controller
      */
     public function addAction(Request $request)
 	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+    	$id = $user->getId();
+
+    	$repository = $this
+    	  ->getDoctrine()
+    	  ->getManager()
+    	  ->getRepository('ToDoListListBundle:Task')
+    	;
+
+    	$counterTasks = $repository->getCounterTasks($id);
+
 		$form = $this->createForm(new TaskType());
 		// Si la requête est en POST, c'est que le visiteur a soumis le formulaire
 		if ($request->isMethod('POST'))
@@ -105,6 +93,8 @@ class DefaultController extends Controller
 
 			// Sinon on recharge simplement la page d'ajout d'une nouvelle tâche en envoyant les erreurs correspondantes
 			return $this->render('ToDoListListBundle:List:add.html.twig', array(
+				'user' => $user,
+				'counterTasks' => $counterTasks,
 				'form' => $form->createView(),
 				'errors' => new JsonResponse($errors)
 			));
@@ -112,6 +102,8 @@ class DefaultController extends Controller
 
 		// Si on n'est pas en POST, alors on affiche le formulaire
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
+			'user' => $user,
+			'counterTasks' => $counterTasks,
 			'form' => $form->createView()
 		));
 	}

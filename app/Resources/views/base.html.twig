@@ -67,10 +67,13 @@
         <div class="container-fluid">
             <div class="col-md-3">
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" {% block accueil %}{% endblock %}><a href="{{ path('listes', {'affichage': 'tout'}) }}">Toutes mes tâches</a></li>
+                    <li role="presentation" {% block accueil %}{% endblock %}><a href="{{ path('listes', {'affichage': 'tout'}) }}"><span class="badge">{{ counterTasks.tout }}</span> Toutes mes tâches</a></li>
+                    <li role="presentation" {% block en_attente %}{% endblock %}><a href="{{ path('listes', {'affichage': 'en_attente'}) }}"><span class="badge">{{ counterTasks.en_attente }}</span> Tâches en attente</a></li>
+                    <li role="presentation" {% block terminees %}{% endblock %}><a href="{{ path('listes', {'affichage': 'terminees'}) }}"><span class="badge">{{ counterTasks.terminees }}</span> Tâches terminées</a></li>
+                </ul>
+
+                <ul class="nav nav-pills nav-stacked">
                     <li role="presentation" {% block nouvelle %}{% endblock %}><a href="{{ path('ajouter_tache') }}">Créer une tâche</a></li>
-                    <li role="presentation" {% block en_cours %}{% endblock %}><a href="{{ path('listes', {'affichage': 'en_cours'}) }}">Tâches en cours</a></li>
-                    <li role="presentation" {% block terminees %}{% endblock %}><a href="{{ path('listes', {'affichage': 'terminees'}) }}">Tâches terminées</a></li>
                 </ul>
             </div>
             <div class="col-md-9">

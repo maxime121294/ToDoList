@@ -3,6 +3,7 @@
 namespace ToDoList\ListBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use ToDoList\ListBundle\Entity\Task;
 
 /**
  * TaskRepository
@@ -12,4 +13,78 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+
+	public function getTasks($affichage = "tout", $authorId){
+    	if($affichage == "tout") {
+	    	$tasks = $this->findBy(
+	    		array('author' => $authorId), // Critere
+	    		array('updatedAt' => 'desc')        // Tri
+	    	);
+    	}
+    	else if($affichage == "en_attente") {
+	    	$query = $this->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->orWhere("t.dueDate IS NULL")
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.updatedAt", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
+    	else if($affichage == "terminees") {
+	    	$query = $this->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.dueDate", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
+
+    	return $tasks;
+	}
+
+	private function countTasksType($filtre = 'tout', $authorId){
+		if($filtre == "tout") {
+	    	$tasks = $this->findBy(
+	    		array('author' => $authorId)
+	    	);
+
+	    	$counter = count($tasks);
+    	}
+    	else if($filtre == "en_attente") {
+	    	$query = $this->createQueryBuilder('t')
+	    		->select('count(t.id)')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->orWhere("t.dueDate IS NULL")
+		    	->setParameter("author", $authorId)
+		    	->getQuery();
+
+		    $counter = $query->getSingleScalarResult();
+    	}
+    	else if($filtre == "terminees") {
+	    	$query = $this->createQueryBuilder('t')
+	    		->select('count(t.id)')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->getQuery();
+
+		    $counter = $query->getSingleScalarResult();
+    	}
+
+    	return $counter;
+	}
+
+	public function getCounterTasks($authorId){
+		$counter = array('tout' => 0, 'en_attente' => 0, 'terminees' => 0);
+		$counter['tout'] = $this->countTasksType('tout', $authorId);
+		$counter['en_attente'] = $this->countTasksType('en_attente', $authorId);
+		$counter['terminees'] = $this->countTasksType('terminees', $authorId);
+
+		return $counter;
+	}
 }
