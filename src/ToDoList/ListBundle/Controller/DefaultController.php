@@ -107,4 +107,29 @@ class DefaultController extends Controller
 			'form' => $form->createView()
 		));
 	}
+
+	/**
+     * Suppression d'une tache
+     *
+     * @Route("/tache/supprimer/{id}", name="supprimer_tache")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function deleteAction($id = '')
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+
+    	$task = $em->getRepository('ToDoListListBundle:Task')->find($id);
+
+    	if (!$task) {
+	        throw $this->createNotFoundException('Task not found');
+	    }
+
+	    $em->remove($task);
+	    $em->flush();
+
+	    $success = array('success'=>$this->generateUrl('listes')); 
+
+	    return new JsonResponse($success);
+    }
 }
