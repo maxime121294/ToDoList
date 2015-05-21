@@ -93,6 +93,8 @@ class DefaultController extends Controller
 
 			// Sinon on recharge simplement la page d'ajout d'une nouvelle tâche en envoyant les erreurs correspondantes
 			return $this->render('ToDoListListBundle:List:add.html.twig', array(
+				'user' => $user,
+				'counterTasks' => $counterTasks,
 				'form' => $form->createView(),
 				'errors' => new JsonResponse($errors)
 			));

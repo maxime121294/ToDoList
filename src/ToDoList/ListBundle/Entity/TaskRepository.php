@@ -21,7 +21,7 @@ class TaskRepository extends EntityRepository
 	    		array('updatedAt' => 'desc')        // Tri
 	    	);
     	}
-    	else if($affichage == "en_cours") {
+    	else if($affichage == "en_attente") {
 	    	$query = $this->createQueryBuilder('t')
 		    	->where("t.author = :author")
 		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
@@ -73,7 +73,7 @@ class TaskRepository extends EntityRepository
 
 		    $counter = $query->getSingleScalarResult();
     	}
-    	
+
     	return $counter;
 	}
 
