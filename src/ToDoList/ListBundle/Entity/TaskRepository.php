@@ -25,6 +25,7 @@ class TaskRepository extends EntityRepository
 	    	$query = $this->createQueryBuilder('t')
 		    	->where("t.author = :author")
 		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->orWhere("t.dueDate IS NULL")
 		    	->setParameter("author", $authorId)
 		    	->orderBy("t.updatedAt", "DESC")
 		    	->getQuery();
@@ -58,6 +59,7 @@ class TaskRepository extends EntityRepository
 	    		->select('count(t.id)')
 		    	->where("t.author = :author")
 		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->orWhere("t.dueDate IS NULL")
 		    	->setParameter("author", $authorId)
 		    	->getQuery();
 
