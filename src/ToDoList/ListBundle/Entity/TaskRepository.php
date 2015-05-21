@@ -3,6 +3,7 @@
 namespace ToDoList\ListBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use ToDoList\ListBundle\Entity\Task;
 
 /**
  * TaskRepository
@@ -12,4 +13,35 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+
+	public function getTasks($affichage = "tout", $authorId){
+    	if($affichage == "tout") {
+	    	$tasks = $this->findBy(
+	    		array('author' => $authorId), // Critere
+	    		array('updatedAt' => 'desc')        // Tri
+	    	);
+    	}
+    	else if($affichage == "en_cours") {
+	    	$query = $this->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.updatedAt", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
+    	else if($affichage == "terminees") {
+	    	$query = $this->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.dueDate", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
+
+    	return $tasks;
+	}
 }
