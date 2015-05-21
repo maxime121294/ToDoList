@@ -32,11 +32,13 @@ class DefaultController extends Controller
     	;
 
     	$tasks = $repository->getTasks($affichage, $id);
+    	$counterTasks = $repository->getCounterTasks($id);
 
         return $this->render('ToDoListListBundle:List:index.html.twig',
         	array(
         		'user' => $user,
         		'tasks' => $tasks,
+        		'counterTasks' => $counterTasks,
         		'affichage' => $affichage
         	));
     }
@@ -50,6 +52,17 @@ class DefaultController extends Controller
      */
     public function addAction(Request $request)
 	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+    	$id = $user->getId();
+
+    	$repository = $this
+    	  ->getDoctrine()
+    	  ->getManager()
+    	  ->getRepository('ToDoListListBundle:Task')
+    	;
+
+    	$counterTasks = $repository->getCounterTasks($id);
+
 		$form = $this->createForm(new TaskType());
 		// Si la requête est en POST, c'est que le visiteur a soumis le formulaire
 		if ($request->isMethod('POST'))
@@ -87,6 +100,8 @@ class DefaultController extends Controller
 
 		// Si on n'est pas en POST, alors on affiche le formulaire
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
+			'user' => $user,
+			'counterTasks' => $counterTasks,
 			'form' => $form->createView()
 		));
 	}

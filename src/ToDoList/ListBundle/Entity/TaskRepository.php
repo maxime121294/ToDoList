@@ -44,4 +44,45 @@ class TaskRepository extends EntityRepository
 
     	return $tasks;
 	}
+
+	private function countTasksType($filtre = 'tout', $authorId){
+		if($filtre == "tout") {
+	    	$tasks = $this->findBy(
+	    		array('author' => $authorId)
+	    	);
+
+	    	$counter = count($tasks);
+    	}
+    	else if($filtre == "en_attente") {
+	    	$query = $this->createQueryBuilder('t')
+	    		->select('count(t.id)')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->getQuery();
+
+		    $counter = $query->getSingleScalarResult();
+    	}
+    	else if($filtre == "terminees") {
+	    	$query = $this->createQueryBuilder('t')
+	    		->select('count(t.id)')
+		    	->where("t.author = :author")
+		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->getQuery();
+
+		    $counter = $query->getSingleScalarResult();
+    	}
+    	
+    	return $counter;
+	}
+
+	public function getCounterTasks($authorId){
+		$counter = array('tout' => 0, 'en_attente' => 0, 'terminees' => 0);
+		$counter['tout'] = $this->countTasksType('tout', $authorId);
+		$counter['en_attente'] = $this->countTasksType('en_attente', $authorId);
+		$counter['terminees'] = $this->countTasksType('terminees', $authorId);
+
+		return $counter;
+	}
 }
