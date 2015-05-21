@@ -29,3 +29,7 @@ body{
 .nav.nav-pills.nav-stacked + .nav.nav-pills.nav-stacked{
 	margin-top: 30px;
 }
+
+.glyphicon-trash{
+	cursor: pointer;
+}
