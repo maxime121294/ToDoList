@@ -64,10 +64,18 @@ class Task
     */
     private $author;
 
+    /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="enabled", type="boolean")
+     */
+    private $enabled;
+
     public function __construct()
     {
         $this->createdAt = new \Datetime();
         $this->updatedAt = new \Datetime();
+        $this->enabled = true;
     }
 
     /**
@@ -216,5 +224,28 @@ class Task
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return Task
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
     }
 }
