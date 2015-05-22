@@ -1,9 +1,5 @@
 {% extends '::base.html.twig' %}
 
-{% block nouvelle %}
-	class="active"
-{% endblock %}
-
 {% block body %}
     <div class="modal-dialog">
         <form role="form" action="{{ path('ajouter_tache') }}" {{ form_enctype(form) }} method="POST">
@@ -45,7 +41,6 @@
 {% endblock %}
 
 {% block javascripts %}
-	{{ parent() }}
 	<script type="text/javascript" src="{{asset('bundles/front/js/bootstrap-datetimepicker.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bundles/front/js/locales/bootstrap-datetimepicker.fr.js')}}"></script>
 	<script type="text/javascript">

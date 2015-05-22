@@ -17,25 +17,45 @@ class TaskRepository extends EntityRepository
 	public function getTasks($affichage = "tout", $authorId){
     	if($affichage == "tout") {
 	    	$tasks = $this->findBy(
-	    		array('author' => $authorId), // Critere
-	    		array('updatedAt' => 'desc')        // Tri
+	    		array('author' => $authorId,
+	    			'enabled' => true
+	    		),
+	    		array('updatedAt' => 'desc')
 	    	);
     	}
     	else if($affichage == "en_attente") {
+
 	    	$query = $this->createQueryBuilder('t')
 		    	->where("t.author = :author")
-		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
-		    	->orWhere("t.dueDate IS NULL")
-		    	->setParameter("author", $authorId)
-		    	->orderBy("t.updatedAt", "DESC")
-		    	->getQuery();
+		    	->andWhere("t.enabled = true");
 
-		    $tasks = $query->getResult();
+		    // module pour la gestion des parenthèses dans la requête avec le query builder
+    		$orModule = $query->expr()->orx()
+	    		->add($query->expr()->gt('t.dueDate', "CURRENT_TIMESTAMP()")) // supérieur à la date actuelle
+			    ->add($query->expr()->isNull('t.dueDate'));
+
+			// On intègre le module dans la requête
+		    $query->andWhere($orModule)
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.updatedAt", "DESC");
+
+		    $tasks = $query->getQuery()->getResult();
     	}
     	else if($affichage == "terminees") {
 	    	$query = $this->createQueryBuilder('t')
 		    	->where("t.author = :author")
 		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->andWhere("t.enabled = true")
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.dueDate", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
+    	else if($affichage == "supprimees") {
+	    	$query = $this->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.enabled = false")
 		    	->setParameter("author", $authorId)
 		    	->orderBy("t.dueDate", "DESC")
 		    	->getQuery();
@@ -49,7 +69,9 @@ class TaskRepository extends EntityRepository
 	private function countTasksType($filtre = 'tout', $authorId){
 		if($filtre == "tout") {
 	    	$tasks = $this->findBy(
-	    		array('author' => $authorId)
+	    		array('author' => $authorId,
+	    			'enabled' => true
+	    		)
 	    	);
 
 	    	$counter = count($tasks);
@@ -58,18 +80,35 @@ class TaskRepository extends EntityRepository
 	    	$query = $this->createQueryBuilder('t')
 	    		->select('count(t.id)')
 		    	->where("t.author = :author")
-		    	->andWhere("t.dueDate > CURRENT_TIMESTAMP()")
-		    	->orWhere("t.dueDate IS NULL")
-		    	->setParameter("author", $authorId)
-		    	->getQuery();
+		    	->andWhere("t.enabled = true");
 
-		    $counter = $query->getSingleScalarResult();
+		    	// module pour la gestion des parenthèses dans la requête avec le query builder
+    		$orModule = $query->expr()->orx()
+	    		->add($query->expr()->gt('t.dueDate', "CURRENT_TIMESTAMP()")) // supérieur à la date actuelle
+			    ->add($query->expr()->isNull('t.dueDate'));
+
+
+		    $query->andWhere($orModule)
+		    	->setParameter("author", $authorId);
+
+		    $counter = $query->getQuery()->getSingleScalarResult();
     	}
     	else if($filtre == "terminees") {
 	    	$query = $this->createQueryBuilder('t')
 	    		->select('count(t.id)')
 		    	->where("t.author = :author")
+		    	->andWhere("t.enabled = true")
 		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
+		    	->setParameter("author", $authorId)
+		    	->getQuery();
+
+		    $counter = $query->getSingleScalarResult();
+    	}
+    	else if($filtre == "supprimees") {
+	    	$query = $this->createQueryBuilder('t')
+	    		->select('count(t.id)')
+		    	->where("t.author = :author")
+		    	->andWhere("t.enabled = false")
 		    	->setParameter("author", $authorId)
 		    	->getQuery();
 
@@ -84,6 +123,7 @@ class TaskRepository extends EntityRepository
 		$counter['tout'] = $this->countTasksType('tout', $authorId);
 		$counter['en_attente'] = $this->countTasksType('en_attente', $authorId);
 		$counter['terminees'] = $this->countTasksType('terminees', $authorId);
+		$counter['supprimees'] = $this->countTasksType('supprimees', $authorId);
 
 		return $counter;
 	}

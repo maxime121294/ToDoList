@@ -96,7 +96,8 @@ class DefaultController extends Controller
 				'user' => $user,
 				'counterTasks' => $counterTasks,
 				'form' => $form->createView(),
-				'errors' => new JsonResponse($errors)
+				'errors' => new JsonResponse($errors),
+                'affichage' => "nouvelle"
 			));
 		}
 
@@ -104,7 +105,39 @@ class DefaultController extends Controller
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
 			'user' => $user,
 			'counterTasks' => $counterTasks,
-			'form' => $form->createView()
+			'form' => $form->createView(),
+            'affichage' => "nouvelle"
 		));
 	}
+
+	/**
+     * Suppression d'une tache
+     *
+     * @Route("/tache/supprimer/{id}", name="supprimer_tache")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function deleteAction($id = '')
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+
+    	$task = $em->getRepository('ToDoListListBundle:Task')->find($id);
+
+    	if (!$task) {
+	        throw $this->createNotFoundException('Task not found');
+	    }
+
+        if ($task->getEnabled()) {
+            $task->setEnabled(false);
+            $em->persist($task);
+        }
+        else {
+            $em->remove($task);
+        }
+	    $em->flush();
+
+	    $success = array('success'=>$this->generateUrl('listes')); 
+
+	    return new JsonResponse($success);
+    }
 }
