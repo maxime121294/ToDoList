@@ -150,4 +150,40 @@ class DefaultController extends Controller
 
 	    return new JsonResponse($success);
     }
+
+    /**
+     * Restauration d'une tache
+     *
+     * @Route("/tache/restaurer/{id}", name="restaurer_tache")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function restoreAction($id = '')
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('ToDoListListBundle:Task');
+
+        $task = $repository->find($id);
+
+        if (!$task) {
+            throw $this->createNotFoundException('Task not found');
+        }
+
+        $task->setEnabled(true);
+        $em->persist($task);
+        $em->flush();
+
+        // on renvoie les coumpteurs pour la maj des badges
+        $counter = $repository->getCounterTasks($user->getId());
+
+        $success['counter'] = array('Tout' => $counter['tout'],
+            'EnAttente' => $counter['en_attente'],
+            'Terminees' => $counter['terminees'],
+            'Supprimees' => $counter['supprimees']
+        ); 
+
+        return new JsonResponse($success);
+    }
 }

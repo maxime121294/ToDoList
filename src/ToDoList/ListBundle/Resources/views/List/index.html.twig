@@ -7,6 +7,9 @@
 				<h3 class="panel-title">
 					{{ task.title }}
 					<span class="glyphicon glyphicon-trash pull-right no-display" id="delete{{ task.id }}"></span>
+					{% if affichage is defined and affichage == "supprimees" %}
+						<span class="glyphicon glyphicon-repeat pull-right no-display" id="restore{{ task.id }}"></span>
+					{% endif %}
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -36,8 +39,30 @@
 						});
 					}
 		        });
-			})
+			});
 		</script>
+
+		{% if affichage is defined and affichage == "supprimees" %}
+			<script type="text/javascript">
+				$('#restore{{ task.id }}').click(function() {
+					$.ajax({
+						url: '{{ path("restaurer_tache", {"id" : task.id}) }}',
+						dataType: 'json',
+						success: function(data)
+						{
+							$('#task{{ task.id }}').animate({ height: 0, opacity: 0, margin: 0 }, 'slow');
+							$.each(data['counter'],function(key, value) {
+								if ($('#badge'+key).text() != value) {
+									$('#badge'+key).fadeOut(function() {
+										$('#badge'+key).html(value).fadeIn();
+									});
+								}
+							});
+						}
+			        });
+				});
+			</script>
+		{% endif %}
 	{% endfor %}
 {% endblock %}
 
@@ -46,7 +71,11 @@
 		$(function() {
 			$('#deleteTasks').click(function() {
 				$('.glyphicon-trash').fadeIn();
-			})
+			});
+
+			$('#restoreTasks').click(function() {
+				$('.glyphicon-repeat').fadeIn();
+			});
 		});
 	</script>
 {% endblock %}

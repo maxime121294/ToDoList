@@ -79,7 +79,8 @@
 
                 <ul class="nav nav-pills nav-stacked">
                     <li role="presentation" {% if affichage is defined and affichage == "nouvelle" %}class="active"{% endif %}><a href="{{ path('ajouter_tache') }}"><span class="glyphicon glyphicon-floppy-disk"></span> Créer une tâche</a></li>
-                    <li role="presentation" {% if affichage is defined %}{% if affichage == "supprimer" %}class="active"{% elseif affichage == "nouvelle" %}class="disabled"{% endif %}{% endif %} id="deleteTasks"><a href="#"><span class="glyphicon glyphicon-trash"></span> Supprimer une tâche</a></li>
+                    <li role="presentation" {% if affichage is defined and affichage == "nouvelle" %}class="disabled" {% endif %}id="deleteTasks"><a href="#"><span class="glyphicon glyphicon-trash"></span> Supprimer une tâche</a></li>
+                    <li role="presentation" {% if affichage is defined and affichage != "supprimees" %}class="disabled" {% endif %}id="restoreTasks"><a href="#"><span class="glyphicon glyphicon-repeat"></span> Restaurer une tâche</a></li>
                 </ul>
             </div>
             <div class="col-md-9">
