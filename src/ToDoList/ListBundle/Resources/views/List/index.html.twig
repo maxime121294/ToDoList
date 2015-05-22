@@ -28,7 +28,11 @@
 					{
 						$('#task{{ task.id }}').animate({ height: 0, opacity: 0, margin: 0 }, 'slow');
 						$.each(data['counter'],function(key, value) {
-							$('#badge'+key).html(value);
+							if ($('#badge'+key).text() != value) {
+								$('#badge'+key).fadeOut(function() {
+									$('#badge'+key).html(value).fadeIn();
+								});
+							}
 						});
 					}
 		        });
