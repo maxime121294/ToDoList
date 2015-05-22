@@ -142,10 +142,10 @@ class DefaultController extends Controller
         // on renvoie les coumpteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
-	    $success['counter'] = array('tout' => $counter['tout'],
-            'en_attente' => $counter['en_attente'],
-            'terminees' => $counter['terminees'],
-            'supprimees' => $counter['supprimees']
+	    $success['counter'] = array('Tout' => $counter['tout'],
+            'EnAttente' => $counter['en_attente'],
+            'Terminees' => $counter['terminees'],
+            'Supprimees' => $counter['supprimees']
         ); 
 
 	    return new JsonResponse($success);
