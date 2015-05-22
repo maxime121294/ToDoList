@@ -1,13 +1,5 @@
 {% extends '::base.html.twig' %}
 
-{% block nouvelle %}
-    class="active"
-{% endblock %}
-
-{% block supprimer %}
-    class="disabled"
-{% endblock %}
-
 {% block body %}
     <div class="modal-dialog">
         <form role="form" action="{{ path('ajouter_tache') }}" {{ form_enctype(form) }} method="POST">
