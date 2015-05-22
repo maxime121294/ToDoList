@@ -7,6 +7,9 @@
 				<h3 class="panel-title">
 					{{ task.title }}
 					<span class="glyphicon glyphicon-trash pull-right no-display" id="delete{{ task.id }}"></span>
+					{% if affichage is defined and affichage == "supprimees" %}
+						<span class="glyphicon glyphicon-repeat pull-right no-display" id="restore{{ task.id }}"></span>
+					{% endif %}
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -46,7 +49,11 @@
 		$(function() {
 			$('#deleteTasks').click(function() {
 				$('.glyphicon-trash').fadeIn();
-			})
+			});
+
+			$('#restoreTasks').click(function() {
+				$('.glyphicon-repeat').fadeIn();
+			});
 		});
 	</script>
 {% endblock %}
