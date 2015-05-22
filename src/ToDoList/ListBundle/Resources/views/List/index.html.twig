@@ -18,6 +18,12 @@
 	{% endif %}
 {% endblock %}
 
+{% block supprimees %}
+	{% if affichage == "supprimees" %}
+		class="active"
+	{% endif %}
+{% endblock %}
+
 {% block body %}
 	{% for task in tasks %}
 		<div class="panel panel-default" id="task{{ task.id }}">

@@ -74,6 +74,7 @@
                     <li role="presentation" {% block accueil %}{% endblock %}><a href="{{ path('listes', {'affichage': 'tout'}) }}"><span class="badge">{{ counterTasks.tout }}</span> Toutes mes tâches</a></li>
                     <li role="presentation" {% block en_attente %}{% endblock %}><a href="{{ path('listes', {'affichage': 'en_attente'}) }}"><span class="badge">{{ counterTasks.en_attente }}</span> Tâches en attente</a></li>
                     <li role="presentation" {% block terminees %}{% endblock %}><a href="{{ path('listes', {'affichage': 'terminees'}) }}"><span class="badge">{{ counterTasks.terminees }}</span> Tâches terminées</a></li>
+                    <li role="presentation" {% block supprimees %}{% endblock %}><a href="{{ path('listes', {'affichage': 'supprimees'}) }}"><span class="badge">{{ counterTasks.supprimees }}</span> Tâches supprimées</a></li>
                 </ul>
 
                 <ul class="nav nav-pills nav-stacked">

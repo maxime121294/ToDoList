@@ -125,7 +125,9 @@ class DefaultController extends Controller
 	        throw $this->createNotFoundException('Task not found');
 	    }
 
-	    $em->remove($task);
+	    //$em->remove($task);
+        $task->setEnabled(false);
+        $em->persist($task);
 	    $em->flush();
 
 	    $success = array('success'=>$this->generateUrl('listes')); 
