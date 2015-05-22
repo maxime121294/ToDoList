@@ -96,7 +96,8 @@ class DefaultController extends Controller
 				'user' => $user,
 				'counterTasks' => $counterTasks,
 				'form' => $form->createView(),
-				'errors' => new JsonResponse($errors)
+				'errors' => new JsonResponse($errors),
+                'affichage' => "nouvelle"
 			));
 		}
 
@@ -104,7 +105,8 @@ class DefaultController extends Controller
 		return $this->render('ToDoListListBundle:List:add.html.twig', array(
 			'user' => $user,
 			'counterTasks' => $counterTasks,
-			'form' => $form->createView()
+			'form' => $form->createView(),
+            'affichage' => "nouvelle"
 		));
 	}
 

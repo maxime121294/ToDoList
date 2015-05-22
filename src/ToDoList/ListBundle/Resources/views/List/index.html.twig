@@ -1,29 +1,5 @@
 {% extends '::base.html.twig' %}
 
-{% block accueil %}
-	{% if affichage == "tout" %}
-		class="active"
-	{% endif %}
-{% endblock %}
-
-{% block en_attente %}
-	{% if affichage == "en_attente" %}
-		class="active"
-	{% endif %}
-{% endblock %}
-
-{% block terminees %}
-	{% if affichage == "terminees" %}
-		class="active"
-	{% endif %}
-{% endblock %}
-
-{% block supprimees %}
-	{% if affichage == "supprimees" %}
-		class="active"
-	{% endif %}
-{% endblock %}
-
 {% block body %}
 	{% for task in tasks %}
 		<div class="panel panel-default" id="task{{ task.id }}">
