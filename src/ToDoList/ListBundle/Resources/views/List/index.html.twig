@@ -24,9 +24,16 @@
 				$.ajax({
 					url: '{{ path("supprimer_tache", {"id" : task.id}) }}',
 					dataType: 'json',
-					success: function()
+					success: function(data)
 					{
 						$('#task{{ task.id }}').animate({ height: 0, opacity: 0, margin: 0 }, 'slow');
+						$.each(data['counter'],function(key, value) {
+							if ($('#badge'+key).text() != value) {
+								$('#badge'+key).fadeOut(function() {
+									$('#badge'+key).html(value).fadeIn();
+								});
+							}
+						});
 					}
 		        });
 			})

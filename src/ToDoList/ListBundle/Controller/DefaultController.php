@@ -119,9 +119,12 @@ class DefaultController extends Controller
      */
     public function deleteAction($id = '')
     {
-    	$em = $this->getDoctrine()->getEntityManager();
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
-    	$task = $em->getRepository('ToDoListListBundle:Task')->find($id);
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('ToDoListListBundle:Task');
+
+    	$task = $repository->find($id);
 
     	if (!$task) {
 	        throw $this->createNotFoundException('Task not found');
@@ -136,7 +139,14 @@ class DefaultController extends Controller
         }
 	    $em->flush();
 
-	    $success = array('success'=>$this->generateUrl('listes')); 
+        // on renvoie les coumpteurs pour la maj des badges
+        $counter = $repository->getCounterTasks($user->getId());
+
+	    $success['counter'] = array('Tout' => $counter['tout'],
+            'EnAttente' => $counter['en_attente'],
+            'Terminees' => $counter['terminees'],
+            'Supprimees' => $counter['supprimees']
+        ); 
 
 	    return new JsonResponse($success);
     }
