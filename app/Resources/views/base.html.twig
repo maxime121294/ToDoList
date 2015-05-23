@@ -81,6 +81,7 @@
                     <li role="presentation" {% if affichage is defined and affichage == "nouvelle" %}class="active"{% endif %}><a href="{{ path('ajouter_tache') }}"><span class="glyphicon glyphicon-floppy-disk"></span> Créer une tâche</a></li>
                     <li role="presentation" {% if affichage is defined and affichage == "nouvelle" %}class="disabled" {% endif %}id="deleteTasks"><a href="#"><span class="glyphicon glyphicon-trash"></span> Supprimer une tâche</a></li>
                     <li role="presentation" {% if affichage is defined and affichage != "supprimees" %}class="disabled" {% endif %}id="restoreTasks"><a href="#"><span class="glyphicon glyphicon-repeat"></span> Restaurer une tâche</a></li>
+                    <li role="presentation" {% if affichage is defined and (affichage == "terminees" or affichage == "supprimees") %}class="disabled" {% endif %}id="validTasks"><a href="#"><span class="glyphicon glyphicon-ok"></span> Valider une tâche</a></li>
                 </ul>
             </div>
             <div class="col-md-9">

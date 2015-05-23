@@ -31,7 +31,8 @@ body{
 }
 
 .glyphicon-trash,
-.glyphicon-repeat{
+.glyphicon-repeat,
+.glyphicon-ok{
 	cursor: pointer;
 }
 

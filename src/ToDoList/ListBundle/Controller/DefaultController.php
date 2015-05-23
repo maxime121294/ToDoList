@@ -186,4 +186,40 @@ class DefaultController extends Controller
 
         return new JsonResponse($success);
     }
+
+    /**
+     * Validation d'une tache
+     *
+     * @Route("/tache/valider/{id}", name="valider_tache")
+     * @Method({"GET", "POST"})
+     * @Template()
+     */
+    public function validAction($id = '')
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('ToDoListListBundle:Task');
+
+        $task = $repository->find($id);
+
+        if (!$task) {
+            throw $this->createNotFoundException('Task not found');
+        }
+
+        $task->setDone(true);
+        $em->persist($task);
+        $em->flush();
+
+        // on renvoie les coumpteurs pour la maj des badges
+        $counter = $repository->getCounterTasks($user->getId());
+
+        $success['counter'] = array('Tout' => $counter['tout'],
+            'EnAttente' => $counter['en_attente'],
+            'Terminees' => $counter['terminees'],
+            'Supprimees' => $counter['supprimees']
+        ); 
+
+        return new JsonResponse($success);
+    }
 }

@@ -71,11 +71,19 @@ class Task
      */
     private $enabled;
 
+    /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="done", type="boolean")
+     */
+    private $done;
+
     public function __construct()
     {
         $this->createdAt = new \Datetime();
         $this->updatedAt = new \Datetime();
         $this->enabled = true;
+        $this->done = false;
     }
 
     /**
@@ -247,5 +255,28 @@ class Task
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set done
+     *
+     * @param boolean $done
+     * @return Task
+     */
+    public function setDone($done)
+    {
+        $this->done = $done;
+
+        return $this;
+    }
+
+    /**
+     * Get done
+     *
+     * @return boolean 
+     */
+    public function getDone()
+    {
+        return $this->done;
     }
 }

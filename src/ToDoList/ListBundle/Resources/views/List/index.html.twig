@@ -10,6 +10,9 @@
 					{% if affichage is defined and affichage == "supprimees" %}
 						<span class="glyphicon glyphicon-repeat pull-right no-display" id="restore{{ task.id }}"></span>
 					{% endif %}
+					{% if affichage is defined and not task.done and not (affichage == "supprimees" or affichage == "terminees") %}
+						<span class="glyphicon glyphicon-ok pull-right no-display" id="valid{{ task.id }}"></span>
+					{% endif %}
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -63,6 +66,28 @@
 				});
 			</script>
 		{% endif %}
+
+		{% if affichage is defined and not (affichage == "supprimees" or affichage == "terminees") %}
+			<script type="text/javascript">
+				$('#valid{{ task.id }}').click(function() {
+					$.ajax({
+						url: '{{ path("valider_tache", {"id" : task.id}) }}',
+						dataType: 'json',
+						success: function(data)
+						{
+							$('#task{{ task.id }}').animate({ height: 0, opacity: 0, margin: 0 }, 'slow');
+							$.each(data['counter'],function(key, value) {
+								if ($('#badge'+key).text() != value) {
+									$('#badge'+key).fadeOut(function() {
+										$('#badge'+key).html(value).fadeIn();
+									});
+								}
+							});
+						}
+			        });
+				});
+			</script>
+		{% endif %}
 	{% endfor %}
 {% endblock %}
 
@@ -73,9 +98,17 @@
 				$('.glyphicon-trash').fadeIn();
 			});
 
-			$('#restoreTasks').click(function() {
-				$('.glyphicon-repeat').fadeIn();
-			});
+			{% if affichage is defined and affichage == "supprimees" %}
+				$('#restoreTasks').click(function() {
+					$('.glyphicon-repeat').fadeIn();
+				});
+			{% endif %}
+
+			{% if affichage is defined and not (affichage == "supprimees" or affichage == "terminees") %}
+				$('#validTasks').click(function() {
+					$('.glyphicon-ok').fadeIn();
+				});
+			{% endif %}
 		});
 	</script>
 {% endblock %}

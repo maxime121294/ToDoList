@@ -27,7 +27,8 @@ class TaskRepository extends EntityRepository
 
 	    	$query = $this->createQueryBuilder('t')
 		    	->where("t.author = :author")
-		    	->andWhere("t.enabled = true");
+		    	->andWhere("t.enabled = true")
+		    	->andWhere("t.done = false");
 
 		    // module pour la gestion des parenthèses dans la requête avec le query builder
     		$orModule = $query->expr()->orx()
@@ -44,13 +45,17 @@ class TaskRepository extends EntityRepository
     	else if($affichage == "terminees") {
 	    	$query = $this->createQueryBuilder('t')
 		    	->where("t.author = :author")
-		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
-		    	->andWhere("t.enabled = true")
-		    	->setParameter("author", $authorId)
-		    	->orderBy("t.dueDate", "DESC")
-		    	->getQuery();
+		    	->andWhere("t.enabled = true");
 
-		    $tasks = $query->getResult();
+		    $orModule = $query->expr()->orx()
+	    		->add($query->expr()->lt('t.dueDate', "CURRENT_TIMESTAMP()")) // inférieur à la date actuelle
+			    ->add($query->expr()->eq('t.done', true));
+
+		    $query->andWhere($orModule)
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.dueDate", "DESC");
+
+		    $tasks = $query->getQuery()->getResult();
     	}
     	else if($affichage == "supprimees") {
 	    	$query = $this->createQueryBuilder('t')
@@ -80,13 +85,13 @@ class TaskRepository extends EntityRepository
 	    	$query = $this->createQueryBuilder('t')
 	    		->select('count(t.id)')
 		    	->where("t.author = :author")
-		    	->andWhere("t.enabled = true");
+		    	->andWhere("t.enabled = true")
+		    	->andWhere("t.done = false");
 
 		    	// module pour la gestion des parenthèses dans la requête avec le query builder
     		$orModule = $query->expr()->orx()
 	    		->add($query->expr()->gt('t.dueDate', "CURRENT_TIMESTAMP()")) // supérieur à la date actuelle
 			    ->add($query->expr()->isNull('t.dueDate'));
-
 
 		    $query->andWhere($orModule)
 		    	->setParameter("author", $authorId);
@@ -97,12 +102,16 @@ class TaskRepository extends EntityRepository
 	    	$query = $this->createQueryBuilder('t')
 	    		->select('count(t.id)')
 		    	->where("t.author = :author")
-		    	->andWhere("t.enabled = true")
-		    	->andWhere("t.dueDate < CURRENT_TIMESTAMP()")
-		    	->setParameter("author", $authorId)
-		    	->getQuery();
+		    	->andWhere("t.enabled = true");
 
-		    $counter = $query->getSingleScalarResult();
+		    $orModule = $query->expr()->orx()
+	    		->add($query->expr()->lt('t.dueDate', "CURRENT_TIMESTAMP()")) // inférieur à la date actuelle
+			    ->add($query->expr()->eq('t.done', true));
+
+		    $query->andWhere($orModule)
+		    	->setParameter("author", $authorId);
+
+		    $counter = $query->getQuery()->getSingleScalarResult();
     	}
     	else if($filtre == "supprimees") {
 	    	$query = $this->createQueryBuilder('t')
