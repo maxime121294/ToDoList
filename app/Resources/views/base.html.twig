@@ -82,6 +82,7 @@
                     <li role="presentation" {% if affichage is defined and affichage == "nouvelle" %}class="disabled" {% endif %}id="deleteTasks"><a href="#"><span class="glyphicon glyphicon-trash"></span> Supprimer une tâche</a></li>
                     <li role="presentation" {% if affichage is defined and affichage != "supprimees" %}class="disabled" {% endif %}id="restoreTasks"><a href="#"><span class="glyphicon glyphicon-repeat"></span> Restaurer une tâche</a></li>
                     <li role="presentation" {% if affichage is defined and (affichage == "terminees" or affichage == "supprimees") %}class="disabled" {% endif %}id="validTasks"><a href="#"><span class="glyphicon glyphicon-ok"></span> Valider une tâche</a></li>
+                    <li role="presentation" {% if affichage is defined and affichage == "en_attente" %}class="disabled" {% endif %}id="unfinishTasks"><a href="#"><span class="glyphicon glyphicon-time"></span> Inachever une tâche</a></li>
                 </ul>
             </div>
             <div class="col-md-9">

@@ -10,6 +10,9 @@
 					{% if affichage is defined and affichage == "supprimees" %}
 						<span class="glyphicon glyphicon-repeat pull-right no-display" id="restore{{ task.id }}"></span>
 					{% endif %}
+					{% if affichage is defined and task.done and affichage != "en_attente" %}
+						<span class="glyphicon glyphicon-time pull-right no-display" id="unfinish{{ task.id }}"></span>
+					{% endif %}
 					{% if affichage is defined and not task.done and not (affichage == "supprimees" or affichage == "terminees") %}
 						<span class="glyphicon glyphicon-ok pull-right no-display" id="valid{{ task.id }}"></span>
 					{% endif %}
@@ -67,11 +70,33 @@
 			</script>
 		{% endif %}
 
-		{% if affichage is defined and not (affichage == "supprimees" or affichage == "terminees") %}
+		{% if affichage is defined and not task.done and not (affichage == "supprimees" or affichage == "terminees") %}
 			<script type="text/javascript">
 				$('#valid{{ task.id }}').click(function() {
 					$.ajax({
 						url: '{{ path("valider_tache", {"id" : task.id}) }}',
+						dataType: 'json',
+						success: function(data)
+						{
+							$('#task{{ task.id }}').animate({ height: 0, opacity: 0, margin: 0 }, 'slow');
+							$.each(data['counter'],function(key, value) {
+								if ($('#badge'+key).text() != value) {
+									$('#badge'+key).fadeOut(function() {
+										$('#badge'+key).html(value).fadeIn();
+									});
+								}
+							});
+						}
+			        });
+				});
+			</script>
+		{% endif %}
+
+		{% if affichage is defined and task.done and affichage != "en_attente" %}
+			<script type="text/javascript">
+				$('#unfinish{{ task.id }}').click(function() {
+					$.ajax({
+						url: '{{ path("inachever_tache", {"id" : task.id}) }}',
 						dataType: 'json',
 						success: function(data)
 						{
@@ -107,6 +132,12 @@
 			{% if affichage is defined and not (affichage == "supprimees" or affichage == "terminees") %}
 				$('#validTasks').click(function() {
 					$('.glyphicon-ok').fadeIn();
+				});
+			{% endif %}
+
+			{% if affichage is defined and affichage != "en_attente" %}
+				$('#unfinishTasks').click(function() {
+					$('.glyphicon-time').fadeIn();
 				});
 			{% endif %}
 		});

@@ -32,7 +32,8 @@ body{
 
 .glyphicon-trash,
 .glyphicon-repeat,
-.glyphicon-ok{
+.glyphicon-ok,
+.glyphicon-time{
 	cursor: pointer;
 }
 
