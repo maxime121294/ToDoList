@@ -139,7 +139,7 @@ class DefaultController extends Controller
         }
 	    $em->flush();
 
-        // on renvoie les coumpteurs pour la maj des badges
+        // on renvoie les compteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
 	    $success['counter'] = array('Tout' => $counter['tout'],
@@ -176,7 +176,7 @@ class DefaultController extends Controller
         $em->persist($task);
         $em->flush();
 
-        // on renvoie les coumpteurs pour la maj des badges
+        // on renvoie les compteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
         $success['counter'] = array('Tout' => $counter['tout'],
@@ -213,7 +213,7 @@ class DefaultController extends Controller
         $em->persist($task);
         $em->flush();
 
-        // on renvoie les coumpteurs pour la maj des badges
+        // on renvoie les compteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
         $success['counter'] = array('Tout' => $counter['tout'],
@@ -250,7 +250,7 @@ class DefaultController extends Controller
         $em->persist($task);
         $em->flush();
 
-        // on renvoie les coumpteurs pour la maj des badges
+        // on renvoie les compteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
         $success['counter'] = array('Tout' => $counter['tout'],
@@ -284,20 +284,22 @@ class DefaultController extends Controller
         }
 
         if ($task->getFollowed()) {
+            $success['alreadyFollowed'] = true;
             $task->setFollowed(false);
         }
         else{
+            $success['alreadyFollowed'] = false;
             $task->setFollowed(true);
         }
         $em->persist($task);
         $em->flush();
 
-        // on renvoie les coumpteurs pour la maj des badges
+        // on renvoie les compteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
         $success['counter'] = array(
             'Suivies' => $counter['suivies']
-        ); 
+        );
 
         return new JsonResponse($success);
     }
