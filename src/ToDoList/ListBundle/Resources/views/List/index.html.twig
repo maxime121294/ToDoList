@@ -16,6 +16,9 @@
 					{% if affichage is defined and not task.done and not (affichage == "supprimees" or affichage == "terminees") %}
 						<span class="glyphicon glyphicon-ok pull-right no-display" id="valid{{ task.id }}"></span>
 					{% endif %}
+					{% if affichage is defined and affichage != "suivies" %}
+						<span class="glyphicon glyphicon-star-empty pull-right no-display" id="follow{{ task.id }}"></span>
+					{% endif %}
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -113,6 +116,28 @@
 				});
 			</script>
 		{% endif %}
+
+		{% if affichage is defined and not task.followed and affichage != "suivies" %}
+			<script type="text/javascript">
+				$('#follow{{ task.id }}').click(function() {
+					$.ajax({
+						url: '{{ path("suivre_tache", {"id" : task.id}) }}',
+						dataType: 'json',
+						success: function(data)
+						{
+							$('#follow{{ task.id }}').animate({ height: 0, opacity: 0, margin: 0 }, 'slow');
+							$.each(data['counter'],function(key, value) {
+								if ($('#badge'+key).text() != value) {
+									$('#badge'+key).fadeOut(function() {
+										$('#badge'+key).html(value).fadeIn();
+									});
+								}
+							});
+						}
+			        });
+				});
+			</script>
+		{% endif %}
 	{% endfor %}
 {% endblock %}
 
@@ -138,6 +163,13 @@
 			{% if affichage is defined and affichage != "en_attente" %}
 				$('#unfinishTasks').click(function() {
 					$('.glyphicon-time').fadeIn();
+				});
+			{% endif %}
+
+			{% if affichage is defined and affichage != "suivies" %}
+				$('#followTasks').click(function() {
+					$('.glyphicon-star-empty').fadeIn();
+					$('.glyphicon-star').fadeIn();
 				});
 			{% endif %}
 		});

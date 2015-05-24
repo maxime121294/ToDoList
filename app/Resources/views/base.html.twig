@@ -72,6 +72,7 @@
             <div class="col-md-3">
                 <ul class="nav nav-pills nav-stacked">
                     <li role="presentation" {% if affichage is defined and affichage == "tout" %}class="active"{% endif %}><a href="{{ path('listes', {'affichage': 'tout'}) }}"><span class="badge" id="badgeTout" >{{ counterTasks.tout }}</span> Toutes mes tâches</a></li>
+                    <li role="presentation" {% if affichage is defined and affichage == "suivies" %}class="active"{% endif %}><a href="{{ path('listes', {'affichage': 'suivies'}) }}"><span class="badge" id="badgeSuivies" >{{ counterTasks.suivies }}</span> Tâches suivies</a></li>
                     <li role="presentation" {% if affichage is defined and affichage == "en_attente" %}class="active"{% endif %}><a href="{{ path('listes', {'affichage': 'en_attente'}) }}"><span class="badge" id="badgeEnAttente" >{{ counterTasks.en_attente }}</span> Tâches en attente</a></li>
                     <li role="presentation" {% if affichage is defined and affichage == "terminees" %}class="active"{% endif %}><a href="{{ path('listes', {'affichage': 'terminees'}) }}"><span class="badge" id="badgeTerminees" >{{ counterTasks.terminees }}</span> Tâches terminées</a></li>
                     <li role="presentation" {% if affichage is defined and affichage == "supprimees" %}class="active"{% endif %}><a href="{{ path('listes', {'affichage': 'supprimees'}) }}"><span class="badge" id="badgeSupprimees" >{{ counterTasks.supprimees }}</span> Tâches supprimées</a></li>
@@ -83,6 +84,7 @@
                     <li role="presentation" {% if affichage is defined and affichage != "supprimees" %}class="disabled" {% endif %}id="restoreTasks"><a href="#"><span class="glyphicon glyphicon-repeat"></span> Restaurer une tâche</a></li>
                     <li role="presentation" {% if affichage is defined and (affichage == "terminees" or affichage == "supprimees") %}class="disabled" {% endif %}id="validTasks"><a href="#"><span class="glyphicon glyphicon-ok"></span> Valider une tâche</a></li>
                     <li role="presentation" {% if affichage is defined and affichage == "en_attente" %}class="disabled" {% endif %}id="unfinishTasks"><a href="#"><span class="glyphicon glyphicon-time"></span> Inachever une tâche</a></li>
+                    <li role="presentation" {% if affichage is defined and affichage == "suivies" %}class="disabled" {% endif %}id="followTasks"><a href="#"><span class="glyphicon glyphicon-star"></span> Suivre / Ne plus suivre une tâche</a></li>
                 </ul>
             </div>
             <div class="col-md-9">
