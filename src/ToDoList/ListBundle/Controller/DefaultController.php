@@ -132,6 +132,7 @@ class DefaultController extends Controller
 
         if ($task->getEnabled()) {
             $task->setEnabled(false);
+            $task->setFollowed(false);
             $em->persist($task);
         }
         else {
