@@ -283,17 +283,19 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Task not found');
         }
 
-        $task->setFollowed(true);
+        if ($task->getFollowed()) {
+            $task->setFollowed(false);
+        }
+        else{
+            $task->setFollowed(true);
+        }
         $em->persist($task);
         $em->flush();
 
         // on renvoie les coumpteurs pour la maj des badges
         $counter = $repository->getCounterTasks($user->getId());
 
-        $success['counter'] = array('Tout' => $counter['tout'],
-            'EnAttente' => $counter['en_attente'],
-            'Terminees' => $counter['terminees'],
-            'Supprimees' => $counter['supprimees'],
+        $success['counter'] = array(
             'Suivies' => $counter['suivies']
         ); 
 
