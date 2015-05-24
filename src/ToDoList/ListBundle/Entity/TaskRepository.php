@@ -67,6 +67,16 @@ class TaskRepository extends EntityRepository
 
 		    $tasks = $query->getResult();
     	}
+    	else if($affichage == "suivies") {
+	    	$query = $this->createQueryBuilder('t')
+		    	->where("t.author = :author")
+		    	->andWhere("t.followed = true")
+		    	->setParameter("author", $authorId)
+		    	->orderBy("t.dueDate", "DESC")
+		    	->getQuery();
+
+		    $tasks = $query->getResult();
+    	}
 
     	return $tasks;
 	}
@@ -123,6 +133,16 @@ class TaskRepository extends EntityRepository
 
 		    $counter = $query->getSingleScalarResult();
     	}
+    	else if($filtre == "suivies") {
+	    	$query = $this->createQueryBuilder('t')
+	    		->select('count(t.id)')
+		    	->where("t.author = :author")
+		    	->andWhere("t.followed = true")
+		    	->setParameter("author", $authorId)
+		    	->getQuery();
+
+		    $counter = $query->getSingleScalarResult();
+    	}
 
     	return $counter;
 	}
@@ -133,6 +153,7 @@ class TaskRepository extends EntityRepository
 		$counter['en_attente'] = $this->countTasksType('en_attente', $authorId);
 		$counter['terminees'] = $this->countTasksType('terminees', $authorId);
 		$counter['supprimees'] = $this->countTasksType('supprimees', $authorId);
+		$counter['suivies'] = $this->countTasksType('suivies', $authorId);
 
 		return $counter;
 	}

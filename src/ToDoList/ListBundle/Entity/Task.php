@@ -78,12 +78,20 @@ class Task
      */
     private $done;
 
+    /**
+     * @var \boolean
+     *
+     * @ORM\Column(name="followed", type="boolean")
+     */
+    private $followed;
+
     public function __construct()
     {
         $this->createdAt = new \Datetime();
         $this->updatedAt = new \Datetime();
         $this->enabled = true;
         $this->done = false;
+        $this->followed = false;
     }
 
     /**
@@ -278,5 +286,28 @@ class Task
     public function getDone()
     {
         return $this->done;
+    }
+
+    /**
+     * Set followed
+     *
+     * @param boolean $followed
+     * @return Task
+     */
+    public function setFollowed($followed)
+    {
+        $this->followed = $followed;
+
+        return $this;
+    }
+
+    /**
+     * Get followed
+     *
+     * @return boolean 
+     */
+    public function getFollowed()
+    {
+        return $this->followed;
     }
 }

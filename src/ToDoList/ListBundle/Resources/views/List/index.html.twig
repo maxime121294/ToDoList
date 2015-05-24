@@ -16,6 +16,13 @@
 					{% if affichage is defined and not task.done and not (affichage == "supprimees" or affichage == "terminees") %}
 						<span class="glyphicon glyphicon-ok pull-right no-display" id="valid{{ task.id }}"></span>
 					{% endif %}
+					{% if affichage is defined and affichage != "supprimees" %}
+						{% if task.followed %}
+							<span class="glyphicon glyphicon-star pull-right" id="follow{{ task.id }}"></span>
+						{% else %}
+							<span class="glyphicon glyphicon-star-empty pull-right no-display" id="follow{{ task.id }}"></span>
+						{% endif %}
+					{% endif %}
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -113,6 +120,30 @@
 				});
 			</script>
 		{% endif %}
+
+		<script type="text/javascript">
+			$('#follow{{ task.id }}').click(function() {
+				$.ajax({
+					url: '{{ path("suivre_tache", {"id" : task.id}) }}',
+					dataType: 'json',
+					success: function(data)
+					{
+						$('#follow{{ task.id }}').fadeOut(function(){
+							if (data['alreadyFollowed']) {
+								$('#follow{{ task.id }}').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+							}
+							else{
+								$('#follow{{ task.id }}').removeClass('glyphicon-star-empty').addClass('glyphicon-star');
+							}
+							$('#badgeSuivies').fadeOut(function() {
+								$('#badgeSuivies').html(data['counter']['Suivies']).fadeIn();
+							});
+						});
+						$('#follow{{ task.id }}').fadeIn();
+					}
+		        });
+			});
+		</script>
 	{% endfor %}
 {% endblock %}
 
@@ -138,6 +169,12 @@
 			{% if affichage is defined and affichage != "en_attente" %}
 				$('#unfinishTasks').click(function() {
 					$('.glyphicon-time').fadeIn();
+				});
+			{% endif %}
+
+			{% if affichage is defined and affichage != "supprimees" %}
+				$('#followTasks').click(function() {
+					$('.glyphicon-star-empty').fadeIn();
 				});
 			{% endif %}
 		});
